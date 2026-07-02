@@ -1,0 +1,26 @@
+{
+    "name": "cms-orbit/blog",
+    "description": "CMS Orbit blog sample container package.",
+    "type": "library",
+    "license": "proprietary",
+    "require": {
+        "php": "^8.3",
+        "cms-orbit/core": "@dev",
+        "cms-orbit/saas": "@dev",
+        "laravel/framework": "^11.0 || ^12.0 || ^13.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "CmsOrbit\\Blog\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "CmsOrbit\\Blog\\BlogServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
