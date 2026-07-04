@@ -24,8 +24,6 @@ class BlogServiceProvider extends OrbitServiceProvider
 
     public function boot(): void
     {
-        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
-
         Theme::register('blog', 'default', BlogThemeServiceProvider::class);
     }
 }

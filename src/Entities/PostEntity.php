@@ -9,9 +9,15 @@ use CmsOrbit\Core\Foundation\Entity\Entity;
 use CmsOrbit\Core\Screen\Fields\Input;
 use CmsOrbit\Core\Screen\Fields\TextArea;
 use CmsOrbit\Core\Screen\TD;
+use CmsOrbit\Saas\Admin\HostContainerAdminRegistrar;
 
 class PostEntity extends Entity
 {
+    public static function uriKey(): string
+    {
+        return 'blog-posts';
+    }
+
     public function model(): string
     {
         return Post::class;
@@ -25,6 +31,16 @@ class PostEntity extends Entity
     public function sort(): int
     {
         return 5200;
+    }
+
+    public function section(): string
+    {
+        return __('Blog');
+    }
+
+    public function sectionKey(): string
+    {
+        return HostContainerAdminRegistrar::sectionKey('blog');
     }
 
     public function fields(): array

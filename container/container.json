@@ -1,0 +1,17 @@
+{
+  "name": "Blog",
+  "slug": "blog",
+  "isolation": {
+    "engine": "multi_database"
+  },
+  "routing": {
+    "supports": ["domain", "subdomain", "path"]
+  },
+  "instance": {
+    "theme_selectable": true
+  },
+  "provider_namespace": "CmsOrbit\\Blog\\",
+  "providers": [
+    "CmsOrbit\\Blog\\BlogServiceProvider"
+  ]
+}
