@@ -7,7 +7,7 @@
     "require": {
         "php": "^8.3",
         "cms-orbit/core": "4.0.0",
-        "cms-orbit/saas": "4.0.0-beta5",
+        "cms-orbit/saas": "4.0.0",
         "laravel/framework": "^11.0 || ^12.0 || ^13.0"
     },
     "autoload": {
