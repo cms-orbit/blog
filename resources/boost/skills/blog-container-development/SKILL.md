@@ -1,33 +1,43 @@
 ---
 name: blog-container-development
-description: Extend or fork the cms-orbit/blog reference container — PostEntity, container.json, instance routes, theme views, and SaaS admin hub. Activate when building blog-like SaaS containers or customizing the sample blog package.
+description: Extend or fork the cms-orbit/blog reference container — PostEntity, auto provision, SSO admin, themes, seeding, instance routes, and SaaS admin hub. Activate when building blog-like SaaS containers or customizing the sample blog package.
 ---
 
 # Blog container development
 
 ## When to use
 
-- Modifying `PostEntity`, blog admin hub routes, or container routes/views
-- Creating a new container modeled after `cms-orbit/blog`
-- Wiring blog admin menus under SaaS host/container sections
+- Modifying entities, auto provision, SSO admin, themes, or demo seeding
+- Creating a container modeled after `cms-orbit/blog`
+- Wiring blog admin menus and instance `/admin` routes
 
 ## Workflow
 
 1. Keep `container/container.json` slug aligned with CLI (`blog`).
-2. Register `PostEntity` via `EntityRegistry` in `BlogServiceProvider::register()`.
-3. Use `Theme::register('blog', 'default', BlogThemeServiceProvider::class)` for the default theme.
-4. Instance home route should stay in `container/routes/instance.php` — not host `routes/web.php`.
-5. After route/container changes: `php artisan saas:route-cache build`.
-6. Translate all admin menu items and entity labels; update `resources/lang/ko.json`.
+2. Use `instance.auto_provision` for default `blog.{host}` instance (idempotent).
+3. Instance public routes in `container/routes/instance.php`; SSO in `container/routes/admin.php`.
+4. Package views use namespace `blog-package::`; theme views use `blog-theme-{name}::`.
+5. `ThemeResolver` replaces `blog` namespace with container theme path — do not store package views under `blog::`.
+6. After route/container changes: `php artisan saas:route-cache build`.
+7. Container runtime routes need `refreshNameLookups()` after dynamic registration (see `ContainerBootloader`).
 
-## Quick instance demo
+## SSO admin
+
+- `SignedAdminUrlGenerator` — HMAC URL for host user + instance
+- `BlogInstanceAdminAuth` — session keys: `blog_admin_instance_id`, `blog_admin_user_id`, `blog_admin_expires_at`
+- Entity CRUD via `BlogInstanceAdminRouteRegistrar` under `/admin`
+
+## Themes & seeding
 
 ```bash
-php artisan saas:instance create blog "Demo Blog" --subdomain=demo --theme=default
-php artisan saas:route-cache build
+php artisan saas:instance create blog "Demo" --subdomain=demo --theme=default
+php artisan blog:seed-demos
 ```
 
-## Forking for a new container
+Register container themes from `container/themes/{slug}/ThemeServiceProvider.php` (autodiscovered in `BlogServiceProvider`).
 
-Copy the package structure, rename namespace/slug, publish as a new Composer package depending on
-`cms-orbit/core` + `cms-orbit/saas`. Do not fork host project routes or `.env` values into the package.
+## Tests
+
+- `tests/Feature/Saas/BlogEnhancementTest.php` — provision, SSO, public routes
+- `tests/Feature/Saas/BlogEnhancementSeederTest.php` — demo seeder (group: slow)
+- `tests/Unit/Blog/ContainerDefinitionTest.php` — container.json schema fields

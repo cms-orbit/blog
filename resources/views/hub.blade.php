@@ -104,6 +104,7 @@
                             <th class="px-5 py-3 text-left text-xs font-semibold uppercase tracking-[0.16em] text-slate-500 dark:text-slate-400">{{ __('Lifecycle') }}</th>
                             <th class="px-5 py-3 text-left text-xs font-semibold uppercase tracking-[0.16em] text-slate-500 dark:text-slate-400">{{ __('Theme') }}</th>
                             <th class="px-5 py-3 text-left text-xs font-semibold uppercase tracking-[0.16em] text-slate-500 dark:text-slate-400">{{ __('Primary Endpoint') }}</th>
+                            <th class="px-5 py-3 text-left text-xs font-semibold uppercase tracking-[0.16em] text-slate-500 dark:text-slate-400">{{ __('Admin') }}</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-slate-200 dark:divide-slate-800">
@@ -119,10 +120,17 @@
                                 <td class="px-5 py-4 text-sm text-slate-600 dark:text-slate-300">{{ $instance['lifecycleLabel'] }}</td>
                                 <td class="px-5 py-4 text-sm text-slate-600 dark:text-slate-300">{{ $instance['theme'] }}</td>
                                 <td class="px-5 py-4 text-sm text-slate-600 dark:text-slate-300">{{ $instance['primaryEndpoint'] }}</td>
+                                <td class="px-5 py-4 text-sm">
+                                    @if ($instance['adminUrl'] ?? null)
+                                        <a href="{{ $instance['adminUrl'] }}" class="font-medium text-violet-600 hover:text-violet-500 dark:text-violet-300">{{ __('Manage blog') }}</a>
+                                    @else
+                                        <span class="text-slate-400">—</span>
+                                    @endif
+                                </td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="4" class="px-5 py-6 text-sm text-slate-500 dark:text-slate-400">{{ __('No blog instances have been provisioned yet.') }}</td>
+                                <td colspan="5" class="px-5 py-6 text-sm text-slate-500 dark:text-slate-400">{{ __('No blog instances have been provisioned yet.') }}</td>
                             </tr>
                         @endforelse
                     </tbody>
@@ -159,6 +167,28 @@
             </div>
         </article>
     </section>
+
+    @if (!empty($hub['themes'] ?? []))
+        <section id="themes" class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-950">
+            <h3 class="text-base font-semibold text-slate-950 dark:text-slate-50">{{ __('Theme Gallery') }}</h3>
+            <p class="mt-1 text-sm text-slate-600 dark:text-slate-300">{{ __('Available themes for blog instances.') }}</p>
+            <div class="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-5">
+                @foreach ($hub['themes'] as $theme)
+                    <div class="rounded-xl border border-slate-200 p-4 dark:border-slate-800">
+                        <p class="font-semibold text-slate-950 dark:text-slate-50">{{ $theme['label'] }}</p>
+                        <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">{{ $theme['name'] }}</p>
+                    </div>
+                @endforeach
+            </div>
+        </section>
+    @endif
+
+    @if (!empty($container['defaultEndpoint'] ?? null))
+        <section class="rounded-2xl border border-violet-200 bg-violet-50 p-5 dark:border-violet-500/20 dark:bg-violet-500/10">
+            <h3 class="text-base font-semibold text-violet-900 dark:text-violet-100">{{ __('Default Blog Endpoint') }}</h3>
+            <p class="mt-1 text-sm text-violet-800 dark:text-violet-200">{{ $container['defaultEndpoint'] }}</p>
+        </section>
+    @endif
 
     <section id="container" class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-950">
         <div class="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">

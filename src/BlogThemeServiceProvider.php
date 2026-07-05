@@ -10,6 +10,6 @@ class BlogThemeServiceProvider extends ServiceProvider
 {
     public function boot(): void
     {
-        $this->loadViewsFrom(__DIR__.'/../container/resources/views', 'blog');
+        $this->loadViewsFrom(__DIR__.'/../themes/default/views', 'blog-theme-default');
     }
 }

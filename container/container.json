@@ -8,13 +8,26 @@
     "engine": "multi_database"
   },
   "routing": {
-    "supports": ["domain", "subdomain", "path"]
+    "supports": ["domain", "subdomain", "path"],
+    "default_subdomain": "blog",
+    "path_first": true
   },
   "instance": {
-    "theme_selectable": true
+    "theme_selectable": true,
+    "auto_provision": {
+      "enabled": false,
+      "name": "Blog",
+      "subdomain": "blog",
+      "theme": "default"
+    }
+  },
+  "admin": {
+    "prefix": "admin",
+    "sso_ttl_minutes": 30
   },
   "provider_namespace": "CmsOrbit\\Blog\\",
   "providers": [
-    "CmsOrbit\\Blog\\BlogServiceProvider"
+    "CmsOrbit\\Blog\\BlogServiceProvider",
+    "CmsOrbit\\Blog\\BlogInstanceAdminServiceProvider"
   ]
 }

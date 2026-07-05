@@ -4,21 +4,22 @@ declare(strict_types=1);
 
 namespace CmsOrbit\Blog\Screens;
 
+use CmsOrbit\Blog\Screens\Concerns\InteractsWithBlogContainer;
 use CmsOrbit\Core\Screen\Action;
 use CmsOrbit\Core\Screen\Actions\Link;
 use CmsOrbit\Core\Screen\Layout;
 use CmsOrbit\Core\Screen\Screen;
 use CmsOrbit\Core\Support\Facades\Layout as LayoutFactory;
-use CmsOrbit\Saas\Admin\Concerns\FormatsSaasLabels;
+use CmsOrbit\Saas\Container\ContainerManager;
 use CmsOrbit\Saas\Instance\Models\Instance;
 use CmsOrbit\Saas\Instance\Models\RouteEndpoint;
-use CmsOrbit\Saas\Models\Container;
 use CmsOrbit\Saas\Theme\ThemeRegistry;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 class BlogHubScreen extends Screen
 {
-    use FormatsSaasLabels;
+    use InteractsWithBlogContainer;
 
     public function name(): ?string
     {
@@ -42,6 +43,9 @@ class BlogHubScreen extends Screen
     {
         $container = $this->blogContainer();
         $instanceIds = $this->blogInstanceIds($container);
+        $user = Auth::guard(config('orbit.guard', 'web'))->user();
+        $definition = app(ContainerManager::class)->get('blog');
+        $defaultSubdomain = $definition?->autoProvision?->subdomain ?? 'blog';
 
         return [
             'hub' => [
@@ -52,6 +56,7 @@ class BlogHubScreen extends Screen
                     'lifecycleLabel' => $this->lifecycleLabel($container->lifecycle),
                     'routingSupports' => $this->routingSupportLabels($container->routing_supports ?? []),
                     'themeSelectable' => $container->theme_selectable,
+                    'defaultEndpoint' => RouteEndpoint::endpointFromSubdomain($defaultSubdomain),
                 ] : null,
                 'metrics' => [
                     'instances' => count($instanceIds),
@@ -69,6 +74,14 @@ class BlogHubScreen extends Screen
                             ->count(),
                     'themes' => count(app(ThemeRegistry::class)->forContainer('blog')),
                 ],
+                'themes' => collect(app(ThemeRegistry::class)->forContainer('blog'))
+                    ->map(fn ($registration, string $name) => [
+                        'name' => $name,
+                        'label' => str($name)->headline()->toString(),
+                        'description' => __('Blog theme :name', ['name' => $name]),
+                    ])
+                    ->values()
+                    ->all(),
                 'links' => [
                     [
                         'title' => __('Blog Instances'),
@@ -81,6 +94,14 @@ class BlogHubScreen extends Screen
                         'description' => __('Provision a new blog instance with the blog container preselected.'),
                         'url' => $this->blogInstanceCreateUrl($container),
                         'cta' => __('Create instance'),
+                    ],
+                    [
+                        'title' => __('Posting'),
+                        'description' => __('Sync posts between the catalog instance and tenant blog workspaces.'),
+                        'url' => Route::has('orbit.blog.posting.index')
+                            ? route('orbit.blog.posting.index')
+                            : '#',
+                        'cta' => __('Open posting sync'),
                     ],
                     [
                         'title' => __('Container Details'),
@@ -96,15 +117,18 @@ class BlogHubScreen extends Screen
                         ->latest('created_at')
                         ->limit(6)
                         ->get()
-                        ->map(fn (Instance $instance) => [
-                            'name' => $instance->name,
-                            'lifecycleLabel' => $this->lifecycleLabel($instance->lifecycle),
-                            'theme' => $instance->theme ?: __('Default'),
-                            'primaryEndpoint' => $instance->primaryEndpoint()?->normalizedValue() ?? '—',
-                            'url' => Route::has('orbit.entities.instances.view')
-                                ? route('orbit.entities.instances.view', ['id' => $instance->getKey()])
-                                : null,
-                        ])
+                        ->map(function (Instance $instance) use ($user) {
+                            return [
+                                'name' => $instance->name,
+                                'lifecycleLabel' => $this->lifecycleLabel($instance->lifecycle),
+                                'theme' => $instance->theme ?: __('Default'),
+                                'primaryEndpoint' => $instance->primaryEndpoint()?->normalizedValue() ?? '—',
+                                'url' => Route::has('orbit.blog.instances.view')
+                                    ? route('orbit.blog.instances.view', ['id' => $instance->getKey()])
+                                    : null,
+                                'adminUrl' => $user !== null ? $this->blogAdminUrl($instance, $user) : null,
+                            ];
+                        })
                         ->all()
                     : [],
                 'endpoints' => empty($instanceIds)
@@ -140,13 +164,13 @@ class BlogHubScreen extends Screen
                 ->icon('bs.collection')
                 ->href($this->blogInstancesUrl($container)),
 
+            Link::make(__('Posting'))
+                ->icon('bs.journal-text')
+                ->route('orbit.blog.posting.index'),
+
             Link::make(__('Create Blog Instance'))
                 ->icon('bs.plus-circle')
                 ->href($this->blogInstanceCreateUrl($container)),
-
-            Link::make(__('Container Details'))
-                ->icon('bs.box-seam')
-                ->href($this->containerDetailsUrl($container)),
         ];
     }
 
@@ -156,60 +180,7 @@ class BlogHubScreen extends Screen
     public function layout(): array
     {
         return [
-            LayoutFactory::view('blog::hub'),
+            LayoutFactory::view('blog-package::hub'),
         ];
-    }
-
-    protected function blogContainer(): ?Container
-    {
-        return Container::query()->where('slug', 'blog')->first();
-    }
-
-    /**
-     * @return list<string>
-     */
-    protected function blogInstanceIds(?Container $container): array
-    {
-        if ($container === null) {
-            return [];
-        }
-
-        return Instance::query()
-            ->whereBelongsTo($container, 'container')
-            ->pluck('id')
-            ->all();
-    }
-
-    protected function blogInstancesUrl(?Container $container): string
-    {
-        if ($container === null || ! Route::has('orbit.entities.instances.index')) {
-            return '#';
-        }
-
-        return route('orbit.entities.instances.index', [
-            'filter' => ['container_id' => $container->getKey()],
-        ]);
-    }
-
-    protected function blogInstanceCreateUrl(?Container $container): string
-    {
-        if ($container === null || ! Route::has('orbit.entities.instances.create')) {
-            return '#';
-        }
-
-        return route('orbit.entities.instances.create', [
-            'container_id' => $container->getKey(),
-        ]);
-    }
-
-    protected function containerDetailsUrl(?Container $container): string
-    {
-        if ($container === null || ! Route::has('orbit.entities.containers.view')) {
-            return '#';
-        }
-
-        return route('orbit.entities.containers.view', [
-            'id' => $container->getKey(),
-        ]);
     }
 }

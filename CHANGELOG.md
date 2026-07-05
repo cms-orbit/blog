@@ -2,6 +2,26 @@
 
 이 문서는 `cms-orbit/blog`의 릴리스 노트를 기록합니다.
 
+## 4.0.2 - 2026-07-05
+
+### 추가
+
+- `blog.{appUrl}` 컨테이너 도메인 + path 기반 인스턴스 URL (`/{instanceHost}/`, `/{postSlug}`)을 정식 지원합니다.
+- Blog Hub(`blog.{appUrl}/`)에서 인스턴스 목록·생성 CTA·게시 글 수를 표시합니다.
+- Orbit **포스팅** 화면에 모든 워크스페이스 글을 1depth 테이블로 통합 표시합니다.
+- `container/themes/` 아래 10개 테마 + `_base` 공통 레이아웃, showcase 4종(editorial/magazine/photo/dark)을 추가했습니다.
+- `/about` 정적 페이지 라우트와 `PageController`를 추가했습니다.
+
+### 개선
+
+- 테마를 `container/themes`로 이전하고 ThemeServiceProvider autodiscover 등록으로 admin 테마 선택을 안정화했습니다.
+- `PostSyncService::listAllPosts()`, `publicPostUrl()` suffix 수정(`/{slug}`).
+- `BlogViewResolver`가 stub 테마 뷰를 감지하면 `_base`/package fallback을 사용합니다.
+
+### 변경
+
+- `cms-orbit/saas` `4.0.2` 필수 (path 별칭 subdomain 리다이렉트 미들웨어).
+
 ## 4.0.1 - 2026-07-05
 
 ### 변경
