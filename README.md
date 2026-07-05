@@ -24,6 +24,15 @@ php artisan saas:route-cache build
 - `cms-orbit/core`
 - `cms-orbit/saas`
 
+## 호스트 설정
+
+| 작업 | 필수 여부 |
+| --- | --- |
+| `composer require cms-orbit/blog` + `migrate` | **필수** |
+| `php artisan saas:route-cache build` | **필수** (설치·라우트 변경 후) |
+| `php artisan saas:instance create blog ...` | 인스턴스를 실제로 띄울 때 **필수** |
+| 컨테이너 JSON/마이그레이션을 호스트에 복사 | **불필요** — 패키지에 포함 |
+
 ## 어떻게 동작하나요?
 
 ### 1. 컨테이너 정의

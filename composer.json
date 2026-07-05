@@ -1,13 +1,13 @@
 {
     "name": "cms-orbit/blog",
-    "version": "4.0.0-beta4",
+    "version": "4.0.0-beta5",
     "description": "CMS Orbit blog sample container package.",
     "type": "library",
     "license": "proprietary",
     "require": {
         "php": "^8.3",
-        "cms-orbit/core": "4.0.0-beta4",
-        "cms-orbit/saas": "4.0.0-beta4",
+        "cms-orbit/core": "4.0.0",
+        "cms-orbit/saas": "4.0.0-beta5",
         "laravel/framework": "^11.0 || ^12.0 || ^13.0"
     },
     "autoload": {
