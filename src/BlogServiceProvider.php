@@ -20,6 +20,9 @@ class BlogServiceProvider extends OrbitServiceProvider
 {
     public function register(): void
     {
+        $this->loadJsonTranslationsFrom(__DIR__.'/../resources/lang');
+        Locale::registerPath(__DIR__.'/../resources/lang');
+
         $this->app->afterResolving(EntityRegistry::class, function (EntityRegistry $registry): void {
             $registry->registerClass([PostEntity::class]);
         });
@@ -31,9 +34,7 @@ class BlogServiceProvider extends OrbitServiceProvider
 
     public function boot(): void
     {
-        $this->loadJsonTranslationsFrom(__DIR__.'/../resources/lang');
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'blog');
-        Locale::registerPath(__DIR__.'/../resources/lang');
 
         Theme::register('blog', 'default', BlogThemeServiceProvider::class);
 
@@ -65,9 +66,9 @@ class BlogServiceProvider extends OrbitServiceProvider
 
         Orbit::registerMenuElement(
             Menu::make(__('Blog Management'))
-                ->icon('bs.journal-text')
+                ->icon('bs.pencil-square')
                 ->url($hubUrl)
-                ->sort(2000)
+                ->sort(5500)
                 ->set('section', __('Blog'))
                 ->set('sectionKey', $sectionKey)
                 ->set('permission', 'blog.dashboard')

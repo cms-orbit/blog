@@ -2,7 +2,7 @@
   "name": "Blog",
   "description": "블로그형 콘텐츠를 인스턴스로 운영하는 기본 컨테이너입니다.",
   "slug": "blog",
-  "icon": "bs.journal-text",
+  "icon": "bs.pencil-square",
   "color": "#8b5cf6",
   "isolation": {
     "engine": "multi_database"
