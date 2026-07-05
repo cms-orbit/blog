@@ -11,6 +11,7 @@
 ### 개선
 
 - README **호스트 설정** 표로 컨테이너 패키지 설치·route cache·인스턴스 생성 단계를 정리했습니다.
+- README에 Laravel Boost 연동과 설치 버전(`^4.0`)을 정리했습니다.
 - `cms-orbit/core` `4.0.0`, `cms-orbit/saas` `4.0.0-beta5`에 맞춰 의존성을 정렬했습니다.
 
 ## 4.0.0-beta4 - 2026-07-04

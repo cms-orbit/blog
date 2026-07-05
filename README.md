@@ -14,15 +14,19 @@
 ## 설치
 
 ```bash
-composer require cms-orbit/blog:^4.0@beta
+composer require cms-orbit/blog:^4.0
 php artisan migrate
 php artisan saas:route-cache build
 ```
 
-패키지는 내부적으로 다음 의존성을 사용합니다.
+`cms-orbit/core`와 `cms-orbit/saas`가 먼저 설치·설정되어 있어야 합니다.
 
-- `cms-orbit/core`
-- `cms-orbit/saas`
+## Laravel Boost
+
+이 패키지는 `resources/boost/guidelines/blog.md`, `resources/boost/skills/blog-container-development/`를 제공합니다.
+
+- Boost **최초 설정**: 호스트에서 `php artisan boost:install` 1회
+- **이후**: `orbit:install` / `orbit:sync`가 이 패키지를 Boost에 등록하고 `boost:update` 실행 (Boost가 이미 설정된 경우)
 
 ## 호스트 설정
 
