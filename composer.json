@@ -1,6 +1,6 @@
 {
     "name": "cms-orbit/blog",
-    "version": "4.0.0-beta5",
+    "version": "4.0.0",
     "description": "CMS Orbit blog sample container package.",
     "type": "library",
     "license": "proprietary",
