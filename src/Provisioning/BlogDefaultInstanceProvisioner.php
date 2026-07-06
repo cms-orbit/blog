@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CmsOrbit\Blog\Provisioning;
 
+use CmsOrbit\Blog\Support\BlogDatabaseConnection;
 use CmsOrbit\Saas\Container\AutoProvisionDefinition;
 use CmsOrbit\Saas\Container\ContainerManager;
 use CmsOrbit\Saas\Engine\Events\InstanceCreated;
@@ -110,7 +111,7 @@ class BlogDefaultInstanceProvisioner
             return null;
         }
 
-        $connection = (string) config('saas.database.host_connection', config('database.default'));
+        $connection = BlogDatabaseConnection::name();
 
         DB::connection($connection)->transaction(function () use ($orphan, $path): void {
             RouteEndpoint::query()->create([

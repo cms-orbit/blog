@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CmsOrbit\Blog\Http\Controllers;
 
 use CmsOrbit\Blog\Admin\SignedAdminUrlGenerator;
+use CmsOrbit\Blog\Support\BlogDatabaseConnection;
 use CmsOrbit\Core\Foundation\Models\User;
 use CmsOrbit\Saas\Enums\EndpointType;
 use CmsOrbit\Saas\Instance\Models\RouteEndpoint;
@@ -32,7 +33,7 @@ class BlogInstanceSsoController
             'blog_admin_expires_at' => $expires,
         ]);
 
-        $hostConnection = (string) config('saas.database.host_connection', config('database.default'));
+        $hostConnection = BlogDatabaseConnection::name();
 
         saas()->host(function () use ($userId, $hostConnection): void {
             $user = User::on($hostConnection)->find($userId);

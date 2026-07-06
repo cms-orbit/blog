@@ -2,6 +2,21 @@
 
 이 문서는 `cms-orbit/blog`의 릴리스 노트를 기록합니다.
 
+## 4.0.3 - 2026-07-06
+
+### 추가
+
+- `BlogDatabaseConnection` 헬퍼와 `blog.database.connection`(`BLOG_DB_CONNECTION`) 설정을 추가했습니다.
+
+### 개선
+
+- SSO·프로비저닝·PostSync에서 호스트 DB 연결 해석을 `BlogDatabaseConnection`/`HostConnection`으로 통일했습니다.
+- `PostSyncService::instanceDatabaseExists()`가 `HostConnection::isSqlite()`를 사용합니다.
+
+### 변경
+
+- `cms-orbit/core` `4.0.2`, `cms-orbit/saas` `4.0.3`에 맞춰 의존성을 정렬했습니다.
+
 ## 4.0.2 - 2026-07-05
 
 ### 추가

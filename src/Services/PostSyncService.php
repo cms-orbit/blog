@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace CmsOrbit\Blog\Services;
 
 use CmsOrbit\Blog\Models\Post;
+use CmsOrbit\Blog\Support\BlogDatabaseConnection;
 use CmsOrbit\Saas\Instance\Models\Instance;
 use CmsOrbit\Saas\Instance\Models\RouteEndpoint;
 use CmsOrbit\Saas\Isolation\Database\InstanceDatabaseContext;
+use CmsOrbit\Saas\Support\HostConnection;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
@@ -307,11 +309,11 @@ class PostSyncService
 
     public function instanceDatabaseExists(Instance $instance): bool
     {
-        $driver = config('database.connections.'.config('saas.database.host_connection', 'host').'.driver', 'sqlite');
-
-        if ($driver === 'sqlite') {
+        if (HostConnection::isSqlite()) {
             return file_exists($instance->getDatabasePath());
         }
+
+        $driver = HostConnection::driver();
 
         $managerClass = config("saas.database.managers.{$driver}");
 
@@ -321,7 +323,7 @@ class PostSyncService
 
         $context = new InstanceDatabaseContext(
             databaseName: $instance->getDatabaseName(),
-            connectionName: (string) config('saas.database.host_connection', 'host'),
+            connectionName: HostConnection::name(),
         );
 
         return app($managerClass)->databaseExists($context);
@@ -339,7 +341,7 @@ class PostSyncService
         } finally {
             saas()->end();
             DB::purge('instance');
-            DB::setDefaultConnection((string) config('saas.database.host_connection', config('database.default')));
+            DB::setDefaultConnection(BlogDatabaseConnection::name());
         }
     }
 }
