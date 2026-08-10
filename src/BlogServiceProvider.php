@@ -116,13 +116,16 @@ class BlogServiceProvider extends OrbitServiceProvider
         $group = ItemPermission::group(__('Blog'))
             ->addPermission('blog.dashboard', __('Blog Hub'));
 
-        foreach (['blog-posts', 'blog-categories', 'blog-tags'] as $uriKey) {
+        foreach ([PostEntity::class, CategoryEntity::class, TagEntity::class] as $entity) {
+            $uriKey = $entity::uriKey();
+            $label = (new $entity)->label();
+
             $group
-                ->addPermission("blog.entities.{$uriKey}.viewAny", __("View {$uriKey}"))
-                ->addPermission("blog.entities.{$uriKey}.view", __("View {$uriKey} item"))
-                ->addPermission("blog.entities.{$uriKey}.create", __("Create {$uriKey}"))
-                ->addPermission("blog.entities.{$uriKey}.update", __("Update {$uriKey}"))
-                ->addPermission("blog.entities.{$uriKey}.delete", __("Delete {$uriKey}"));
+                ->addPermission("blog.entities.{$uriKey}.viewAny", __('View :label', ['label' => $label]))
+                ->addPermission("blog.entities.{$uriKey}.view", __('View :label item', ['label' => $label]))
+                ->addPermission("blog.entities.{$uriKey}.create", __('Create :label', ['label' => $label]))
+                ->addPermission("blog.entities.{$uriKey}.update", __('Update :label', ['label' => $label]))
+                ->addPermission("blog.entities.{$uriKey}.delete", __('Delete :label', ['label' => $label]));
         }
 
         Orbit::registerPermission($group);
