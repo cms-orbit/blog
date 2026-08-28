@@ -201,6 +201,20 @@ Orbit **Blog Hub** → 인스턴스 **블로그 관리** 링크 → SSO → `/ad
 - `src/Admin/SignedAdminUrlGenerator.php` — SSO URL 생성
 - `src/Services/PostSyncService.php` — 인스턴스 간 포스트 동기화
 
+## 업데이트 노트
+
+### 4.0.7
+
+- **`cms-orbit/saas` 가 사설 저장소 유료 패키지임을 설치 안내에 명시**: blog 는 Packagist 에 공개되어 있지만 saas 를 요구하므로 Packagist 단독으로는 설치되지 않습니다. saas 없이 blog 를 쓸 수 없음을 노출하는 의도된 전략입니다. 다만 문서가 `composer require cms-orbit/blog:^4.0` 만 안내해서, 실패 시 `cms-orbit/saas could not be found in any version, there may be a typo in the package name` 이라는 "패키지가 깨졌다"로 읽히는 메시지만 남았습니다. 사설 저장소 선언과 인증 설정 절차를 추가하고, 그 메시지가 정상 동작임을 명시했습니다.
+- **Composer 동작 주의**: Composer 는 의존 패키지가 선언한 `repositories` 를 무시하고 **루트 패키지의 것만** 읽습니다. 따라서 구매자가 자기 `composer.json` 에 사설 저장소를 직접 추가해야 합니다.
+- **요구사항의 낡은 버전 수정**: `cms-orbit/core` `4.0.2` → `^4.1`, `cms-orbit/saas` `4.0.3` → `^4.0.8`.
+
+### 4.0.6
+
+- **php 제약 `^8.3` 복구**: 게시된 태그는 모두 `^8.3` 이었으나 main 에서 `^8.2` 로 내려가 있었습니다. Laravel 13 은 php `^8.3` 을 요구하므로 `php ^8.2` + `laravel/framework ^13` 조합은 php 8.2 환경에서 조용히 Laravel 11 을 설치합니다.
+- **`laravel/pint` `^1.14` → `^1.30`** (1.30 이 php `^8.3` 을 요구).
+- **릴리스 파이프라인 도입**: `.githooks/pre-push` 가 composer.json 의 `version` 필드와 태그명이 어긋난 태그의 푸시를 차단합니다. `cms-orbit/core` 의 `4.0.8` 태그가 `version: 4.0.7` 로 만들어져 Packagist 가 아무 오류 없이 그 태그를 무시했고, 4.0.8 이 게시되지 않은 사실을 아무도 알지 못한 사고가 있었습니다. `bin/release <버전>` 이 version 갱신·검증·커밋·태그·푸시를 한 동작으로 묶어 이 드리프트를 원천 차단하고, `cms-orbit/*` 의존이 실제로 Packagist 에 게시되어 있는지 Composer 리졸버로 확인합니다. 저장소를 클론해 `composer install` 하면 `core.hooksPath` 가 자동 설정됩니다.
+
 ## License
 
 Proprietary
