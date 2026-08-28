@@ -5,7 +5,7 @@
     "type": "library",
     "license": "proprietary",
     "require": {
-        "php": "^8.2",
+        "php": "^8.3",
         "cms-orbit/core": "^4.1",
         "cms-orbit/saas": "^4.0.8",
         "laravel/framework": "^11.0 || ^12.0 || ^13.0"
@@ -29,6 +29,11 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require-dev": {
-        "laravel/pint": "^1.14"
+        "laravel/pint": "^1.30"
+    },
+    "scripts": {
+        "post-install-cmd": [
+            "git config core.hooksPath .githooks || true"
+        ]
     }
 }
