@@ -17,19 +17,41 @@
 ## 요구사항
 
 - PHP `^8.3`
-- `cms-orbit/core` `4.0.2`
-- `cms-orbit/saas` `4.0.3`
+- `cms-orbit/core` `^4.1`
+- `cms-orbit/saas` `^4.0.8` — **유료 패키지**, 사설 저장소에서만 배포
 - Laravel `^11.0 || ^12.0 || ^13.0`
 
 ## 설치
 
+`cms-orbit/blog`는 `cms-orbit/saas` 위에서만 동작하고, saas 는 라이선스 키 기반
+**유료 패키지**로 사설 저장소에서 배포됩니다. Packagist 에만 의존하면
+`cms-orbit/saas could not be found in any version` 으로 설치가 실패합니다 —
+정상 동작이며 패키지 오류가 아닙니다.
+
+Composer 는 의존 패키지가 선언한 `repositories` 를 무시하고 **루트 패키지의 것만**
+읽습니다. 따라서 구매 후 발급받은 저장소를 직접 `composer.json`에 추가해야 합니다.
+
+```json
+{
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://<발급받은-사설-저장소-주소>"
+        }
+    ]
+}
+```
+
 ```bash
+composer config --global --auth http-basic.<사설-저장소-호스트> <라이선스-키> <시크릿>
 composer require cms-orbit/blog:^4.0
 php artisan migrate
 php artisan saas:route-cache build
 ```
 
 `cms-orbit/core`(`orbit:install`)와 `cms-orbit/saas`가 먼저 설치·설정되어 있어야 합니다.
+
+라이선스 구매·키 발급 문의: `<판매 페이지 또는 연락처를 채워주세요>`
 
 ## Laravel Boost
 

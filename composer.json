@@ -1,7 +1,7 @@
 {
     "name": "cms-orbit/blog",
-    "version": "4.0.6",
-    "description": "CMS Orbit blog sample container package.",
+    "version": "4.0.7",
+    "description": "CMS Orbit blog SaaS container package. 유료 패키지 cms-orbit/saas (사설 저장소 배포)가 필요합니다.",
     "type": "library",
     "license": "proprietary",
     "require": {
