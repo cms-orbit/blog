@@ -1,13 +1,13 @@
 {
     "name": "cms-orbit/blog",
-    "version": "4.0.7",
+    "version": "4.1.0",
     "description": "CMS Orbit blog SaaS container package. 유료 패키지 cms-orbit/saas (사설 저장소 배포)가 필요합니다.",
     "type": "library",
     "license": "proprietary",
     "require": {
-        "php": "^8.3",
-        "cms-orbit/core": "^4.1",
-        "cms-orbit/saas": "^4.0.8",
+        "php": "^8.4",
+        "cms-orbit/core": "^4.4",
+        "cms-orbit/saas": "^4.1",
         "laravel/framework": "^11.0 || ^12.0 || ^13.0"
     },
     "autoload": {

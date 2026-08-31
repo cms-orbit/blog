@@ -203,6 +203,14 @@ Orbit **Blog Hub** → 인스턴스 **블로그 관리** 링크 → SSO → `/ad
 
 ## 업데이트 노트
 
+### 4.1.0
+
+- **php 제약 `^8.3` → `^8.4`**: php 8.3 환경에서는 더 이상 설치되지 않습니다.
+- **`cms-orbit/core` `^4.1` → `^4.4`**.
+- **`cms-orbit/saas` `^4.0.8` → `^4.1`**.
+- **생산 의존은 하나도 바뀌지 않았습니다.** php 하한 상향으로 새로 받게 된 패키지는 Pest 5 계열(`require-dev`)뿐입니다. cms-orbit 전 패키지의 직접 의존 20개를 최신판과 전수 대조했고, 나머지 18개는 이미 php `^8.3` 에서 최신을 받고 있었습니다. 이번 상향은 기능 확보가 아니라 장기 정리 목적입니다.
+- **소비자의 Laravel 11·12 지원은 유지됩니다** (`laravel/framework ^11.0 || ^12.0 || ^13.0`).
+
 ### 4.0.7
 
 - **`cms-orbit/saas` 가 사설 저장소 유료 패키지임을 설치 안내에 명시**: blog 는 Packagist 에 공개되어 있지만 saas 를 요구하므로 Packagist 단독으로는 설치되지 않습니다. saas 없이 blog 를 쓸 수 없음을 노출하는 의도된 전략입니다. 다만 문서가 `composer require cms-orbit/blog:^4.0` 만 안내해서, 실패 시 `cms-orbit/saas could not be found in any version, there may be a typo in the package name` 이라는 "패키지가 깨졌다"로 읽히는 메시지만 남았습니다. 사설 저장소 선언과 인증 설정 절차를 추가하고, 그 메시지가 정상 동작임을 명시했습니다.
