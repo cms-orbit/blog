@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace CmsOrbit\Blog\Screens;
 
 use CmsOrbit\Blog\Enums\PostStatus;
-use CmsOrbit\Blog\Services\PostSyncService;
 use CmsOrbit\Blog\Screens\Concerns\InteractsWithBlogContainer;
+use CmsOrbit\Blog\Services\PostSyncService;
 use CmsOrbit\Core\Screen\Action;
 use CmsOrbit\Core\Screen\Actions\Button;
 use CmsOrbit\Core\Screen\Actions\Link;
 use CmsOrbit\Core\Screen\Fields\Input;
-use CmsOrbit\Core\Screen\Fields\Select;
 use CmsOrbit\Core\Screen\Fields\RichText;
+use CmsOrbit\Core\Screen\Fields\Select;
 use CmsOrbit\Core\Screen\Fields\TextArea;
 use CmsOrbit\Core\Screen\Layout;
 use CmsOrbit\Core\Screen\Screen;
@@ -53,14 +53,14 @@ class BlogPostingEditScreen extends Screen
 
         return [
             'post' => [
-                'title' => $post->title,
-                'slug' => $post->slug,
-                'excerpt' => $post->excerpt,
-                'body' => $post->body,
-                'status' => $post->status?->value ?? PostStatus::Draft->value,
-                'published_at' => $post->published_at?->format('Y-m-d\TH:i'),
-                'featured_image' => $post->featured_image,
-                'meta_title' => $post->meta_title,
+                'title'            => $post->title,
+                'slug'             => $post->slug,
+                'excerpt'          => $post->excerpt,
+                'body'             => $post->body,
+                'status'           => $post->status?->value ?? PostStatus::Draft->value,
+                'published_at'     => $post->published_at?->format('Y-m-d\TH:i'),
+                'featured_image'   => $post->featured_image,
+                'meta_title'       => $post->meta_title,
                 'meta_description' => $post->meta_description,
             ],
         ];
@@ -79,7 +79,7 @@ class BlogPostingEditScreen extends Screen
                 ->icon('bs.arrow-left')
                 ->route('orbit.blog.posting.posts.view', [
                     'instanceId' => $instanceId,
-                    'postId' => $postId,
+                    'postId'     => $postId,
                 ]),
 
             Button::make(__('Save changes'))
@@ -117,14 +117,14 @@ class BlogPostingEditScreen extends Screen
         $instance = $this->findBlogInstance($instanceId);
 
         $validated = $request->validate([
-            'post.title' => ['required', 'string', 'max:255'],
-            'post.slug' => ['nullable', 'string', 'max:255'],
-            'post.excerpt' => ['nullable', 'string'],
-            'post.body' => ['nullable', 'string'],
-            'post.status' => ['required', Rule::enum(PostStatus::class)],
-            'post.published_at' => ['nullable', 'date'],
-            'post.featured_image' => ['nullable', 'string', 'max:2048'],
-            'post.meta_title' => ['nullable', 'string', 'max:255'],
+            'post.title'            => ['required', 'string', 'max:255'],
+            'post.slug'             => ['nullable', 'string', 'max:255'],
+            'post.excerpt'          => ['nullable', 'string'],
+            'post.body'             => ['nullable', 'string'],
+            'post.status'           => ['required', Rule::enum(PostStatus::class)],
+            'post.published_at'     => ['nullable', 'date'],
+            'post.featured_image'   => ['nullable', 'string', 'max:2048'],
+            'post.meta_title'       => ['nullable', 'string', 'max:255'],
             'post.meta_description' => ['nullable', 'string', 'max:500'],
         ]);
 
@@ -143,7 +143,7 @@ class BlogPostingEditScreen extends Screen
 
         return redirect()->route('orbit.blog.posting.posts.view', [
             'instanceId' => $instanceId,
-            'postId' => $postId,
+            'postId'     => $postId,
         ]);
     }
 }

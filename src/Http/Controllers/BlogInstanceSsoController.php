@@ -29,8 +29,8 @@ class BlogInstanceSsoController
 
         $request->session()->put([
             'blog_admin_instance_id' => $instanceId,
-            'blog_admin_user_id' => $userId,
-            'blog_admin_expires_at' => $expires,
+            'blog_admin_user_id'     => $userId,
+            'blog_admin_expires_at'  => $expires,
         ]);
 
         $hostConnection = BlogDatabaseConnection::name();

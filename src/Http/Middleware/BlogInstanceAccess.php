@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace CmsOrbit\Blog\Http\Middleware;
 
 use Closure;
-use CmsOrbit\Core\Foundation\Http\Middleware\SetOrbitLocale;
-use CmsOrbit\Core\Filters\Http\Middleware\NormalizeTableFilterQuery;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 

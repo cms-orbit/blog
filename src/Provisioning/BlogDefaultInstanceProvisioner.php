@@ -115,11 +115,11 @@ class BlogDefaultInstanceProvisioner
 
         DB::connection($connection)->transaction(function () use ($orphan, $path): void {
             RouteEndpoint::query()->create([
-                'type' => EndpointType::Path,
-                'value' => $path,
+                'type'              => EndpointType::Path,
+                'value'             => $path,
                 'endpointable_type' => $orphan->getMorphClass(),
-                'endpointable_id' => $orphan->getKey(),
-                'is_primary' => true,
+                'endpointable_id'   => $orphan->getKey(),
+                'is_primary'        => true,
             ]);
         });
 

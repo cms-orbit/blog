@@ -36,9 +36,9 @@ class BlogInstanceAdminScreen extends Screen
     {
         return [
             'stats' => [
-                'posts' => Post::query()->count(),
+                'posts'     => Post::query()->count(),
                 'published' => Post::query()->published()->count(),
-                'recent' => Post::query()->latest('updated_at')->limit(5)->get(['id', 'title', 'status', 'updated_at']),
+                'recent'    => Post::query()->latest('updated_at')->limit(5)->get(['id', 'title', 'status', 'updated_at']),
             ],
         ];
     }

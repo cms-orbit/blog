@@ -50,16 +50,16 @@ class BlogHubScreen extends Screen
         return [
             'hub' => [
                 'container' => $container ? [
-                    'name' => $this->containerNameLabel($container->name),
-                    'slug' => $container->slug,
-                    'isolationLabel' => $this->isolationLabel($container->isolation_engine),
-                    'lifecycleLabel' => $this->lifecycleLabel($container->lifecycle),
+                    'name'            => $this->containerNameLabel($container->name),
+                    'slug'            => $container->slug,
+                    'isolationLabel'  => $this->isolationLabel($container->isolation_engine),
+                    'lifecycleLabel'  => $this->lifecycleLabel($container->lifecycle),
                     'routingSupports' => $this->routingSupportLabels($container->routing_supports ?? []),
                     'themeSelectable' => $container->theme_selectable,
                     'defaultEndpoint' => RouteEndpoint::endpointFromSubdomain($defaultSubdomain),
                 ] : null,
                 'metrics' => [
-                    'instances' => count($instanceIds),
+                    'instances'       => count($instanceIds),
                     'activeInstances' => $container
                         ? Instance::query()
                             ->whereBelongsTo($container, 'container')
@@ -76,38 +76,38 @@ class BlogHubScreen extends Screen
                 ],
                 'themes' => collect(app(ThemeRegistry::class)->forContainer('blog'))
                     ->map(fn ($registration, string $name) => [
-                        'name' => $name,
-                        'label' => str($name)->headline()->toString(),
+                        'name'        => $name,
+                        'label'       => str($name)->headline()->toString(),
                         'description' => __('Blog theme :name', ['name' => $name]),
                     ])
                     ->values()
                     ->all(),
                 'links' => [
                     [
-                        'title' => __('Blog Instances'),
+                        'title'       => __('Blog Instances'),
                         'description' => __('Review connected blog instances, lifecycle states, and primary endpoints.'),
-                        'url' => $this->blogInstancesUrl($container),
-                        'cta' => __('Open instances'),
+                        'url'         => $this->blogInstancesUrl($container),
+                        'cta'         => __('Open instances'),
                     ],
                     [
-                        'title' => __('Create Blog Instance'),
+                        'title'       => __('Create Blog Instance'),
                         'description' => __('Provision a new blog instance with the blog container preselected.'),
-                        'url' => $this->blogInstanceCreateUrl($container),
-                        'cta' => __('Create instance'),
+                        'url'         => $this->blogInstanceCreateUrl($container),
+                        'cta'         => __('Create instance'),
                     ],
                     [
-                        'title' => __('Posting'),
+                        'title'       => __('Posting'),
                         'description' => __('Sync posts between the catalog instance and tenant blog workspaces.'),
-                        'url' => Route::has('orbit.blog.posting.index')
+                        'url'         => Route::has('orbit.blog.posting.index')
                             ? route('orbit.blog.posting.index')
                             : '#',
                         'cta' => __('Open posting sync'),
                     ],
                     [
-                        'title' => __('Container Details'),
+                        'title'       => __('Container Details'),
                         'description' => __('Inspect container capabilities, routing support, and theme options.'),
-                        'url' => $this->containerDetailsUrl($container),
-                        'cta' => __('Inspect container'),
+                        'url'         => $this->containerDetailsUrl($container),
+                        'cta'         => __('Inspect container'),
                     ],
                 ],
                 'instances' => $container
@@ -119,11 +119,11 @@ class BlogHubScreen extends Screen
                         ->get()
                         ->map(function (Instance $instance) use ($user) {
                             return [
-                                'name' => $instance->name,
-                                'lifecycleLabel' => $this->lifecycleLabel($instance->lifecycle),
-                                'theme' => $instance->theme ?: __('Default'),
+                                'name'            => $instance->name,
+                                'lifecycleLabel'  => $this->lifecycleLabel($instance->lifecycle),
+                                'theme'           => $instance->theme ?: __('Default'),
                                 'primaryEndpoint' => $instance->primaryEndpoint()?->normalizedValue() ?? '—',
-                                'url' => Route::has('orbit.blog.instances.view')
+                                'url'             => Route::has('orbit.blog.instances.view')
                                     ? route('orbit.blog.instances.view', ['id' => $instance->getKey()])
                                     : null,
                                 'adminUrl' => $user !== null ? $this->blogAdminUrl($instance, $user) : null,
@@ -142,10 +142,10 @@ class BlogHubScreen extends Screen
                         ->get()
                         ->map(fn (RouteEndpoint $endpoint) => [
                             'instanceName' => $endpoint->endpointable?->getAttribute('name') ?: '—',
-                            'typeLabel' => $this->routingSupportLabel($endpoint->type->value),
-                            'value' => $endpoint->normalizedValue(),
-                            'primary' => $endpoint->is_primary,
-                            'fallback' => $endpoint->is_fallback,
+                            'typeLabel'    => $this->routingSupportLabel($endpoint->type->value),
+                            'value'        => $endpoint->normalizedValue(),
+                            'primary'      => $endpoint->is_primary,
+                            'fallback'     => $endpoint->is_fallback,
                         ])
                         ->all(),
             ],

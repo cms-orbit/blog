@@ -36,7 +36,7 @@ class Post extends Model
     protected function casts(): array
     {
         return [
-            'status' => PostStatus::class,
+            'status'       => PostStatus::class,
             'published_at' => 'datetime',
         ];
     }
@@ -61,7 +61,8 @@ class Post extends Model
     }
 
     /**
-     * @param  Builder<Post>  $query
+     * @param Builder<Post> $query
+     *
      * @return Builder<Post>
      */
     public function scopePublished(Builder $query): Builder

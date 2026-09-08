@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace CmsOrbit\Blog\Screens;
 
-use CmsOrbit\Blog\Services\PostSyncService;
 use CmsOrbit\Blog\Screens\Concerns\InteractsWithBlogContainer;
+use CmsOrbit\Blog\Services\PostSyncService;
 use CmsOrbit\Core\Screen\Action;
 use CmsOrbit\Core\Screen\Actions\Button;
 use CmsOrbit\Core\Screen\Actions\Link;
@@ -14,7 +14,6 @@ use CmsOrbit\Core\Screen\Screen;
 use CmsOrbit\Core\Screen\TD;
 use CmsOrbit\Core\Support\Facades\Layout as LayoutFactory;
 use CmsOrbit\Core\Support\Facades\Toast;
-use CmsOrbit\Saas\Instance\Models\Instance;
 
 class BlogPostingInstanceScreen extends Screen
 {
@@ -48,21 +47,21 @@ class BlogPostingInstanceScreen extends Screen
 
         return [
             'instance' => [
-                'id' => $instance->getKey(),
-                'name' => $instance->name,
-                'endpoint' => $instance->primaryEndpoint()?->normalizedValue() ?? '—',
-                'publicUrl' => $publicUrl,
+                'id'                => $instance->getKey(),
+                'name'              => $instance->name,
+                'endpoint'          => $instance->primaryEndpoint()?->normalizedValue() ?? '—',
+                'publicUrl'         => $publicUrl,
                 'databaseAvailable' => $sync->instanceDatabaseExists($instance),
             ],
             'source' => $source ? [
-                'id' => $source->getKey(),
+                'id'   => $source->getKey(),
                 'name' => $source->name,
             ] : null,
             'sync' => [
                 'last_synced_at' => $meta['last_synced_at'] ?: '—',
             ],
             'postCount' => count($posts),
-            'posts' => $posts,
+            'posts'     => $posts,
         ];
     }
 
@@ -103,10 +102,10 @@ class BlogPostingInstanceScreen extends Screen
     {
         return [
             LayoutFactory::metrics([
-                __('Instance') => 'instance.name',
-                __('Endpoint') => 'instance.endpoint',
+                __('Instance')    => 'instance.name',
+                __('Endpoint')    => 'instance.endpoint',
                 __('Last synced') => 'sync.last_synced_at',
-                __('Posts') => 'postCount',
+                __('Posts')       => 'postCount',
             ])->title(__('Workspace')),
 
             LayoutFactory::table('posts', [
@@ -157,7 +156,7 @@ class BlogPostingInstanceScreen extends Screen
             $result = $sync->syncToInstance($instance);
             Toast::success(__('Synced :count post(s) into :name.', [
                 'count' => $result['synced'],
-                'name' => $instance->name,
+                'name'  => $instance->name,
             ]));
         } catch (\Throwable $exception) {
             Toast::error($exception->getMessage());

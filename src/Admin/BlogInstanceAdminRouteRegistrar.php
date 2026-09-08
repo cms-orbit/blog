@@ -11,16 +11,14 @@ use CmsOrbit\Blog\Http\Middleware\BlogInstanceAccess;
 use CmsOrbit\Blog\Http\Middleware\BlogInstanceAdminAuth;
 use CmsOrbit\Blog\Screens\BlogInstanceAdminScreen;
 use CmsOrbit\Blog\Screens\ThemeSettingsScreen;
-use CmsOrbit\Core\Config\Screens\ConfigGroupScreen;
 use CmsOrbit\Core\Crud\Screens\CreateScreen;
 use CmsOrbit\Core\Crud\Screens\EditScreen;
 use CmsOrbit\Core\Crud\Screens\ListScreen;
 use CmsOrbit\Core\Crud\Screens\TrashScreen;
 use CmsOrbit\Core\Crud\Screens\ViewScreen;
-use CmsOrbit\Core\Foundation\Entity\Entity;
-use CmsOrbit\Core\Foundation\Entity\EntityRegistry;
-use CmsOrbit\Core\Foundation\Http\Middleware\SetOrbitLocale;
 use CmsOrbit\Core\Filters\Http\Middleware\NormalizeTableFilterQuery;
+use CmsOrbit\Core\Foundation\Entity\Entity;
+use CmsOrbit\Core\Foundation\Http\Middleware\SetOrbitLocale;
 use Illuminate\Support\Facades\Route;
 use Tabuna\Breadcrumbs\Trail;
 

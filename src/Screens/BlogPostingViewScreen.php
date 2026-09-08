@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace CmsOrbit\Blog\Screens;
 
-use CmsOrbit\Blog\Services\PostSyncService;
 use CmsOrbit\Blog\Screens\Concerns\InteractsWithBlogContainer;
+use CmsOrbit\Blog\Services\PostSyncService;
 use CmsOrbit\Core\Screen\Action;
 use CmsOrbit\Core\Screen\Actions\Link;
 use CmsOrbit\Core\Screen\Layout;
@@ -46,22 +46,22 @@ class BlogPostingViewScreen extends Screen
 
         return [
             'instance' => [
-                'id' => $instance->getKey(),
+                'id'   => $instance->getKey(),
                 'name' => $instance->name,
             ],
             'post' => [
-                'id' => $serialized['id'],
-                'title' => $serialized['title'],
-                'slug' => $serialized['slug'],
-                'statusLabel' => $serialized['statusLabel'],
-                'publishedAt' => $serialized['publishedAt'] ?? '—',
-                'excerpt' => $serialized['excerpt'] ?: '—',
-                'body' => $serialized['body'] ?: '—',
-                'featuredImage' => $serialized['featuredImage'] ?: '—',
-                'metaTitle' => $serialized['metaTitle'] ?: '—',
+                'id'              => $serialized['id'],
+                'title'           => $serialized['title'],
+                'slug'            => $serialized['slug'],
+                'statusLabel'     => $serialized['statusLabel'],
+                'publishedAt'     => $serialized['publishedAt'] ?? '—',
+                'excerpt'         => $serialized['excerpt'] ?: '—',
+                'body'            => $serialized['body'] ?: '—',
+                'featuredImage'   => $serialized['featuredImage'] ?: '—',
+                'metaTitle'       => $serialized['metaTitle'] ?: '—',
                 'metaDescription' => $serialized['metaDescription'] ?: '—',
-                'publicUrl' => $serialized['publicUrl'],
-                'editUrl' => $serialized['editUrl'],
+                'publicUrl'       => $serialized['publicUrl'],
+                'editUrl'         => $serialized['editUrl'],
             ],
         ];
     }

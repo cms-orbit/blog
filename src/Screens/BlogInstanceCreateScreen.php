@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CmsOrbit\Blog\Screens;
 
 use CmsOrbit\Blog\Screens\Concerns\InteractsWithBlogContainer;
+use CmsOrbit\Blog\Support\BlogContainerDomain;
 use CmsOrbit\Core\Screen\Action;
 use CmsOrbit\Core\Screen\Actions\Button;
 use CmsOrbit\Core\Screen\Actions\Link;
@@ -50,15 +51,15 @@ class BlogInstanceCreateScreen extends Screen
 
         return [
             'instance' => [
-                'name' => '',
-                'email' => '',
+                'name'      => '',
+                'email'     => '',
                 'subdomain' => '',
-                'path' => '',
-                'theme' => 'default',
+                'path'      => '',
+                'theme'     => 'default',
                 'lifecycle' => InstanceLifecycle::Active->value,
             ],
             'container' => $container ? [
-                'id' => $container->getKey(),
+                'id'   => $container->getKey(),
                 'name' => $this->containerNameLabel($container->name),
             ] : null,
         ];
@@ -99,8 +100,8 @@ class BlogInstanceCreateScreen extends Screen
                 Input::make('instance.path')
                     ->title(__('Instance host (path)'))
                     ->help(__('Public path on :host, e.g. acme opens :example.', [
-                        'host' => \CmsOrbit\Blog\Support\BlogContainerDomain::host(),
-                        'example' => \CmsOrbit\Blog\Support\BlogContainerDomain::host().'/acme/',
+                        'host'    => BlogContainerDomain::host(),
+                        'example' => BlogContainerDomain::host().'/acme/',
                     ])),
                 Select::make('instance.theme')
                     ->title(__('Theme'))
@@ -123,21 +124,21 @@ class BlogInstanceCreateScreen extends Screen
         abort_if($container === null, 404);
 
         $validated = $request->validate([
-            'instance.name' => ['required', 'string', 'max:255'],
+            'instance.name'  => ['required', 'string', 'max:255'],
             'instance.email' => ['nullable', 'email', 'max:255'],
-            'instance.path' => [
+            'instance.path'  => [
                 'required',
                 'string',
                 'max:255',
                 Rule::unique((new RouteEndpoint)->getTable(), 'value'),
             ],
-            'instance.theme' => ['required', 'string', Rule::in(array_keys($this->blogThemeOptions()))],
+            'instance.theme'     => ['required', 'string', Rule::in(array_keys($this->blogThemeOptions()))],
             'instance.lifecycle' => ['required', Rule::enum(InstanceLifecycle::class)],
         ], [], [
-            'instance.name' => __('Name'),
-            'instance.email' => __('Owner email'),
-            'instance.path' => __('Path prefix'),
-            'instance.theme' => __('Theme'),
+            'instance.name'      => __('Name'),
+            'instance.email'     => __('Owner email'),
+            'instance.path'      => __('Path prefix'),
+            'instance.theme'     => __('Theme'),
             'instance.lifecycle' => __('Lifecycle'),
         ]);
 

@@ -8,6 +8,7 @@ use CmsOrbit\Blog\Concerns\HasBlogPermissions;
 use CmsOrbit\Blog\Enums\PostStatus;
 use CmsOrbit\Blog\Models\Category;
 use CmsOrbit\Blog\Models\Post;
+use CmsOrbit\Blog\Models\Tag;
 use CmsOrbit\Core\Foundation\Entity\Entity;
 use CmsOrbit\Core\Screen\Fields\Input;
 use CmsOrbit\Core\Screen\Fields\Select;
@@ -97,7 +98,7 @@ class PostEntity extends Entity
                 ->empty(__('No category')),
             Select::make('tags.')
                 ->title(__('Tags'))
-                ->fromModel(\CmsOrbit\Blog\Models\Tag::class, 'name', 'id')
+                ->fromModel(Tag::class, 'name', 'id')
                 ->multiple(),
             Input::make('featured_image')->title(__('Featured Image URL')),
             Input::make('meta_title')->title(__('Meta Title')),
@@ -124,7 +125,7 @@ class PostEntity extends Entity
     {
         return [
             'title' => ['required', 'string', 'max:255'],
-            'slug' => [
+            'slug'  => [
                 'nullable',
                 'string',
                 'max:255',

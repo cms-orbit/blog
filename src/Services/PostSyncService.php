@@ -9,6 +9,7 @@ use CmsOrbit\Blog\Support\BlogDatabaseConnection;
 use CmsOrbit\Saas\Instance\Models\Instance;
 use CmsOrbit\Saas\Instance\Models\RouteEndpoint;
 use CmsOrbit\Saas\Isolation\Database\InstanceDatabaseContext;
+use CmsOrbit\Saas\Models\Container;
 use CmsOrbit\Saas\Support\HostConnection;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -23,7 +24,7 @@ class PostSyncService
     {
         if (! $this->instanceDatabaseExists($instance)) {
             return [
-                'total' => 0,
+                'total'     => 0,
                 'published' => 0,
             ];
         }
@@ -31,13 +32,13 @@ class PostSyncService
         try {
             return $this->runOnInstance($instance, function (): array {
                 return [
-                    'total' => Post::query()->count(),
+                    'total'     => Post::query()->count(),
                     'published' => Post::query()->published()->count(),
                 ];
             });
         } catch (\Throwable) {
             return [
-                'total' => 0,
+                'total'     => 0,
                 'published' => 0,
             ];
         }
@@ -45,7 +46,7 @@ class PostSyncService
 
     public function resolveSourceInstance(): ?Instance
     {
-        $container = \CmsOrbit\Saas\Models\Container::query()->where('slug', 'blog')->first();
+        $container = Container::query()->where('slug', 'blog')->first();
 
         if ($container === null) {
             return null;
@@ -90,16 +91,16 @@ class PostSyncService
             return Post::query()
                 ->get(['title', 'slug', 'body', 'excerpt', 'status', 'published_at', 'featured_image', 'meta_title', 'meta_description'])
                 ->map(fn (Post $post): array => [
-                    'title' => $post->title,
-                    'slug' => $post->slug,
-                    'body' => $post->body,
-                    'excerpt' => $post->excerpt,
-                    'status' => $post->status?->value,
+                    'title'        => $post->title,
+                    'slug'         => $post->slug,
+                    'body'         => $post->body,
+                    'excerpt'      => $post->excerpt,
+                    'status'       => $post->status?->value,
                     'published_at' => $post->published_at instanceof Carbon
                         ? $post->published_at->toDateTimeString()
                         : $post->published_at,
-                    'featured_image' => $post->featured_image,
-                    'meta_title' => $post->meta_title,
+                    'featured_image'   => $post->featured_image,
+                    'meta_title'       => $post->meta_title,
                     'meta_description' => $post->meta_description,
                 ])
                 ->all();
@@ -125,14 +126,14 @@ class PostSyncService
 
         saas()->host(function () use ($target, $source, $synced): void {
             $target->setInternal('post_sync', [
-                'last_synced_at' => now()->toIso8601String(),
+                'last_synced_at'     => now()->toIso8601String(),
                 'source_instance_id' => (string) $source->getKey(),
-                'synced_count' => $synced,
+                'synced_count'       => $synced,
             ])->save();
         });
 
         return [
-            'synced' => $synced,
+            'synced'    => $synced,
             'source_id' => (string) $source->getKey(),
         ];
     }
@@ -166,9 +167,9 @@ class PostSyncService
     /**
      * @return list<array<string, mixed>>
      */
-    public function listAllPosts(?\CmsOrbit\Saas\Models\Container $container = null): array
+    public function listAllPosts(?Container $container = null): array
     {
-        $container ??= \CmsOrbit\Saas\Models\Container::query()->where('slug', 'blog')->first();
+        $container ??= Container::query()->where('slug', 'blog')->first();
 
         if ($container === null) {
             return [];
@@ -186,10 +187,10 @@ class PostSyncService
                 $endpoint = $instance->primaryEndpoint() ?? $instance->fallbackEndpoint();
 
                 $posts[] = array_merge($post, [
-                    'instanceId' => (string) $instance->getKey(),
+                    'instanceId'   => (string) $instance->getKey(),
                     'instanceName' => $instance->name,
                     'instancePath' => $endpoint?->normalizedValue() ?? '—',
-                    'postsUrl' => Route::has('orbit.blog.posting.instance')
+                    'postsUrl'     => Route::has('orbit.blog.posting.instance')
                         ? route('orbit.blog.posting.instance', ['instanceId' => (string) $instance->getKey()])
                         : null,
                 ]);
@@ -223,7 +224,7 @@ class PostSyncService
     }
 
     /**
-     * @param  array<string, mixed>  $attributes
+     * @param array<string, mixed> $attributes
      */
     public function updatePost(Instance $instance, int $postId, array $attributes): Post
     {
@@ -267,19 +268,19 @@ class PostSyncService
         $postId = (int) $post->getKey();
 
         return [
-            'id' => $postId,
-            'title' => $post->title,
-            'slug' => $post->slug,
-            'excerpt' => $post->excerpt,
-            'body' => $post->body,
-            'status' => $post->status?->value,
-            'statusLabel' => $post->status?->label() ?? '—',
-            'publishedAt' => $post->published_at?->toDateTimeString(),
-            'featuredImage' => $post->featured_image,
-            'metaTitle' => $post->meta_title,
+            'id'              => $postId,
+            'title'           => $post->title,
+            'slug'            => $post->slug,
+            'excerpt'         => $post->excerpt,
+            'body'            => $post->body,
+            'status'          => $post->status?->value,
+            'statusLabel'     => $post->status?->label() ?? '—',
+            'publishedAt'     => $post->published_at?->toDateTimeString(),
+            'featuredImage'   => $post->featured_image,
+            'metaTitle'       => $post->meta_title,
             'metaDescription' => $post->meta_description,
-            'publicUrl' => $this->publicPostUrl($instance, (string) $post->slug),
-            'viewUrl' => Route::has('orbit.blog.posting.posts.view')
+            'publicUrl'       => $this->publicPostUrl($instance, (string) $post->slug),
+            'viewUrl'         => Route::has('orbit.blog.posting.posts.view')
                 ? route('orbit.blog.posting.posts.view', ['instanceId' => $instanceId, 'postId' => $postId])
                 : null,
             'editUrl' => Route::has('orbit.blog.posting.posts.edit')
@@ -294,16 +295,16 @@ class PostSyncService
 
         if (! is_array($meta)) {
             return [
-                'last_synced_at' => null,
+                'last_synced_at'     => null,
                 'source_instance_id' => null,
-                'synced_count' => null,
+                'synced_count'       => null,
             ];
         }
 
         return [
-            'last_synced_at' => isset($meta['last_synced_at']) ? (string) $meta['last_synced_at'] : null,
+            'last_synced_at'     => isset($meta['last_synced_at']) ? (string) $meta['last_synced_at'] : null,
             'source_instance_id' => isset($meta['source_instance_id']) ? (string) $meta['source_instance_id'] : null,
-            'synced_count' => isset($meta['synced_count']) ? (int) $meta['synced_count'] : null,
+            'synced_count'       => isset($meta['synced_count']) ? (int) $meta['synced_count'] : null,
         ];
     }
 
@@ -331,7 +332,9 @@ class PostSyncService
 
     /**
      * @template T
-     * @param  \Closure(): T  $callback
+     *
+     * @param \Closure(): T $callback
+     *
      * @return T
      */
     protected function runOnInstance(Instance $instance, \Closure $callback): mixed

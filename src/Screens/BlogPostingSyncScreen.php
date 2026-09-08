@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace CmsOrbit\Blog\Screens;
 
-use CmsOrbit\Blog\Services\PostSyncService;
 use CmsOrbit\Blog\Screens\Concerns\InteractsWithBlogContainer;
+use CmsOrbit\Blog\Services\PostSyncService;
 use CmsOrbit\Core\Screen\Action;
 use CmsOrbit\Core\Screen\Actions\Button;
 use CmsOrbit\Core\Screen\Actions\Link;
@@ -56,14 +56,14 @@ class BlogPostingSyncScreen extends Screen
                     $instanceId = (string) $instance->getKey();
 
                     return [
-                        'id' => $instanceId,
-                        'name' => $instance->name,
-                        'endpoint' => $instance->primaryEndpoint()?->normalizedValue() ?? '—',
+                        'id'                => $instanceId,
+                        'name'              => $instance->name,
+                        'endpoint'          => $instance->primaryEndpoint()?->normalizedValue() ?? '—',
                         'databaseAvailable' => $sync->instanceDatabaseExists($instance),
-                        'lastSyncedAt' => $meta['last_synced_at'],
-                        'syncedCount' => $meta['synced_count'],
-                        'publicUrl' => $publicUrl,
-                        'postsUrl' => Route::has('orbit.blog.posting.instance')
+                        'lastSyncedAt'      => $meta['last_synced_at'],
+                        'syncedCount'       => $meta['synced_count'],
+                        'publicUrl'         => $publicUrl,
+                        'postsUrl'          => Route::has('orbit.blog.posting.instance')
                             ? route('orbit.blog.posting.instance', ['instanceId' => $instanceId])
                             : null,
                     ];
@@ -75,12 +75,12 @@ class BlogPostingSyncScreen extends Screen
 
         return [
             'source' => $source ? [
-                'id' => $source->getKey(),
-                'name' => $source->name,
+                'id'       => $source->getKey(),
+                'name'     => $source->name,
                 'endpoint' => $source->primaryEndpoint()?->normalizedValue() ?? '—',
             ] : null,
             'instances' => $instances,
-            'posts' => $posts,
+            'posts'     => $posts,
             'postCount' => count($posts),
         ];
     }
@@ -109,9 +109,9 @@ class BlogPostingSyncScreen extends Screen
     {
         return [
             LayoutFactory::metrics([
-                __('Catalog source') => 'source.name',
+                __('Catalog source')  => 'source.name',
                 __('Source endpoint') => 'source.endpoint',
-                __('Posts') => 'postCount',
+                __('Posts')           => 'postCount',
             ])->title(__('Overview')),
 
             LayoutFactory::table('posts', [
@@ -225,7 +225,7 @@ class BlogPostingSyncScreen extends Screen
         }
 
         Toast::success(__('Synced :count post(s) across :targets workspace(s).', [
-            'count' => $syncedTotal,
+            'count'   => $syncedTotal,
             'targets' => $targetCount,
         ]));
     }

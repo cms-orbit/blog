@@ -30,10 +30,10 @@ class PublicHubController
                     $counts = $sync->counts($instance);
 
                     return [
-                        'name' => $instance->name,
-                        'theme' => $instance->theme ?: 'default',
-                        'path' => $endpoint?->normalizedValue() ?? '—',
-                        'url' => $endpoint instanceof RouteEndpoint ? $endpoint->canonicalUrl() : null,
+                        'name'           => $instance->name,
+                        'theme'          => $instance->theme ?: 'default',
+                        'path'           => $endpoint?->normalizedValue() ?? '—',
+                        'url'            => $endpoint instanceof RouteEndpoint ? $endpoint->canonicalUrl() : null,
                         'publishedPosts' => $counts['published'],
                     ];
                 })
@@ -43,7 +43,7 @@ class PublicHubController
             : [];
 
         return view('blog-package::public.hub', [
-            'blogHost' => $blogHost,
+            'blogHost'  => $blogHost,
             'instances' => $instances,
             'createUrl' => Route::has('orbit.blog.instances.create')
                 ? route('orbit.blog.instances.create')

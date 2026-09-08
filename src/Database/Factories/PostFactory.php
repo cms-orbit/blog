@@ -22,23 +22,23 @@ class PostFactory extends Factory
         $title = fake()->sentence(4);
 
         return [
-            'title' => $title,
-            'slug' => Str::slug($title).'-'.fake()->unique()->numerify('###'),
-            'body' => fake()->paragraphs(3, true),
-            'excerpt' => fake()->paragraph(),
-            'status' => fake()->randomElement(PostStatus::cases()),
-            'published_at' => fake()->optional()->dateTimeBetween('-1 year'),
-            'featured_image' => fake()->optional()->imageUrl(800, 450),
-            'meta_title' => fake()->optional()->sentence(6),
+            'title'            => $title,
+            'slug'             => Str::slug($title).'-'.fake()->unique()->numerify('###'),
+            'body'             => fake()->paragraphs(3, true),
+            'excerpt'          => fake()->paragraph(),
+            'status'           => fake()->randomElement(PostStatus::cases()),
+            'published_at'     => fake()->optional()->dateTimeBetween('-1 year'),
+            'featured_image'   => fake()->optional()->imageUrl(800, 450),
+            'meta_title'       => fake()->optional()->sentence(6),
             'meta_description' => fake()->optional()->sentence(12),
-            'category_id' => null,
+            'category_id'      => null,
         ];
     }
 
     public function published(): static
     {
         return $this->state(fn (): array => [
-            'status' => PostStatus::Published,
+            'status'       => PostStatus::Published,
             'published_at' => now()->subDay(),
         ]);
     }

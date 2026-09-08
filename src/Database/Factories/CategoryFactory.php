@@ -20,10 +20,10 @@ class CategoryFactory extends Factory
         $name = fake()->words(2, true);
 
         return [
-            'name' => $name,
-            'slug' => Str::slug($name).'-'.fake()->unique()->numerify('##'),
+            'name'        => $name,
+            'slug'        => Str::slug($name).'-'.fake()->unique()->numerify('##'),
             'description' => fake()->optional()->sentence(),
-            'sort' => fake()->numberBetween(0, 100),
+            'sort'        => fake()->numberBetween(0, 100),
         ];
     }
 }

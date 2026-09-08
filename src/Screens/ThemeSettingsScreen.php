@@ -15,7 +15,6 @@ use CmsOrbit\Core\Screen\Layouts\Rows;
 use CmsOrbit\Core\Screen\Screen;
 use CmsOrbit\Core\Support\Facades\Layout as LayoutFactory;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
 
 class ThemeSettingsScreen extends Screen
 {

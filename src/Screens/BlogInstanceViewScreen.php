@@ -11,7 +11,6 @@ use CmsOrbit\Core\Screen\Layout;
 use CmsOrbit\Core\Screen\Screen;
 use CmsOrbit\Core\Screen\Sight;
 use CmsOrbit\Core\Support\Facades\Layout as LayoutFactory;
-use CmsOrbit\Saas\Instance\Models\Instance;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -46,15 +45,15 @@ class BlogInstanceViewScreen extends Screen
 
         return [
             'instance' => [
-                'id' => $instance->getKey(),
-                'name' => $instance->name,
-                'email' => $instance->email ?: '—',
-                'lifecycleLabel' => $this->lifecycleLabel($instance->lifecycle),
-                'theme' => $instance->theme ?: __('Default'),
+                'id'              => $instance->getKey(),
+                'name'            => $instance->name,
+                'email'           => $instance->email ?: '—',
+                'lifecycleLabel'  => $this->lifecycleLabel($instance->lifecycle),
+                'theme'           => $instance->theme ?: __('Default'),
                 'primaryEndpoint' => $instance->primaryEndpoint()?->normalizedValue() ?? '—',
-                'publicUrl' => $publicUrl,
-                'adminUrl' => $adminUrl,
-                'containerName' => $instance->container
+                'publicUrl'       => $publicUrl,
+                'adminUrl'        => $adminUrl,
+                'containerName'   => $instance->container
                     ? $this->containerNameLabel($instance->container->name)
                     : '—',
                 'entityUrl' => Route::has('orbit.entities.instances.view')

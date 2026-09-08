@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace CmsOrbit\Blog\Screens;
 
-use CmsOrbit\Blog\Services\PostSyncService;
 use CmsOrbit\Blog\Screens\Concerns\InteractsWithBlogContainer;
+use CmsOrbit\Blog\Services\PostSyncService;
 use CmsOrbit\Core\Screen\Action;
 use CmsOrbit\Core\Screen\Actions\Link;
 use CmsOrbit\Core\Screen\Layout;
@@ -59,18 +59,18 @@ class BlogInstanceListScreen extends Screen
                     $adminUrl = $user !== null ? $this->blogAdminUrl($instance, $user) : null;
 
                     return [
-                        'id' => $instance->getKey(),
-                        'name' => $instance->name,
-                        'email' => $instance->email ?: '—',
-                        'lifecycleLabel' => $this->lifecycleLabel($instance->lifecycle),
-                        'theme' => $instance->theme ?: __('Default'),
-                        'primaryEndpoint' => $instance->primaryEndpoint()?->normalizedValue() ?? '—',
-                        'totalPosts' => $counts['total'],
-                        'publishedPosts' => $counts['published'],
+                        'id'                => $instance->getKey(),
+                        'name'              => $instance->name,
+                        'email'             => $instance->email ?: '—',
+                        'lifecycleLabel'    => $this->lifecycleLabel($instance->lifecycle),
+                        'theme'             => $instance->theme ?: __('Default'),
+                        'primaryEndpoint'   => $instance->primaryEndpoint()?->normalizedValue() ?? '—',
+                        'totalPosts'        => $counts['total'],
+                        'publishedPosts'    => $counts['published'],
                         'databaseAvailable' => $sync->instanceDatabaseExists($instance),
-                        'publicUrl' => $publicUrl,
-                        'adminUrl' => $adminUrl,
-                        'viewUrl' => Route::has('orbit.blog.instances.view')
+                        'publicUrl'         => $publicUrl,
+                        'adminUrl'          => $adminUrl,
+                        'viewUrl'           => Route::has('orbit.blog.instances.view')
                             ? route('orbit.blog.instances.view', ['id' => $instance->getKey()])
                             : null,
                     ];
@@ -84,7 +84,7 @@ class BlogInstanceListScreen extends Screen
                 'slug' => $container->slug,
             ] : null,
             'metrics' => [
-                'totalPosts' => $totalPosts,
+                'totalPosts'     => $totalPosts,
                 'publishedPosts' => $publishedPosts,
             ],
             'instances' => $instances,
@@ -117,7 +117,7 @@ class BlogInstanceListScreen extends Screen
     {
         return [
             LayoutFactory::metrics([
-                __('Total posts') => 'metrics.totalPosts',
+                __('Total posts')     => 'metrics.totalPosts',
                 __('Published posts') => 'metrics.publishedPosts',
             ])->title(__('Post totals')),
 

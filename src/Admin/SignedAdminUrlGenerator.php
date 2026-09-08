@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CmsOrbit\Blog\Admin;
 
-use App\Models\User;
 use CmsOrbit\Blog\Support\BlogContainerConfig;
 use CmsOrbit\Blog\Support\BlogContainerDomain;
 use CmsOrbit\Saas\Enums\EndpointType;
@@ -43,9 +42,9 @@ class SignedAdminUrlGenerator
         }
 
         $query = http_build_query([
-            'instance' => $instance->getKey(),
-            'user' => $user->getAuthIdentifier(),
-            'expires' => $expires,
+            'instance'  => $instance->getKey(),
+            'user'      => $user->getAuthIdentifier(),
+            'expires'   => $expires,
             'signature' => $signature,
         ]);
 
@@ -53,7 +52,7 @@ class SignedAdminUrlGenerator
     }
 
     /**
-     * @param  array<string, mixed>  $query
+     * @param array<string, mixed> $query
      */
     public function validate(array $query): bool
     {

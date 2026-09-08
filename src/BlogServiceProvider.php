@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CmsOrbit\Blog;
 
-use CmsOrbit\Blog\Admin\SignedAdminUrlGenerator;
 use CmsOrbit\Blog\Entities\CategoryEntity;
 use CmsOrbit\Blog\Entities\PostEntity;
 use CmsOrbit\Blog\Entities\TagEntity;
@@ -226,8 +225,8 @@ class BlogServiceProvider extends OrbitServiceProvider
     {
         return match (config('orbit.access.mode', 'subdomain')) {
             'subdomain' => $this->resolveOrbitSubdomainHost(),
-            'domain' => config('orbit.access.domain'),
-            default => null,
+            'domain'    => config('orbit.access.domain'),
+            default     => null,
         };
     }
 
