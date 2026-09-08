@@ -2,6 +2,13 @@
 
 이 문서는 `cms-orbit/blog`의 릴리스 노트를 기록합니다.
 
+## 4.3.1 - 2026-09-08
+
+### 변경
+
+- **`tabuna/breadcrumbs` `^5.0` 을 명시 선언했습니다**: `BlogInstanceAdminRouteRegistrar` 가 `Tabuna\Breadcrumbs\Trail` 을 타입으로 쓰는데 선언이 없어 `cms-orbit/core` 를 통한 전이 의존에 기대고 있었습니다.
+- **`blog:seed-demos` 가 실제로 동작합니다**: `DemoBlogInstancesSeeder` 를 패키지 안(`CmsOrbit\Blog\Database\Seeders`)으로 옮겼습니다. 이전에는 호스트 네임스페이스(`Database\Seeders`)의 클래스를 참조하면서 패키지가 그 클래스를 제공하지도, 게시하지도 않았습니다. 즉 README 가 광고하는 이 명령이 **모든 소비자에게 깨져 있었습니다.** 시더는 `CmsOrbit\Blog`·`CmsOrbit\Saas`·`Illuminate` 만 참조하므로 호스트에 있을 이유가 없었습니다.
+
 ## 4.3.0 - 2026-09-08
 
 ### 변경

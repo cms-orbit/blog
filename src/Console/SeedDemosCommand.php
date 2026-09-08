@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CmsOrbit\Blog\Console;
 
-use Database\Seeders\DemoBlogInstancesSeeder;
+use CmsOrbit\Blog\Database\Seeders\DemoBlogInstancesSeeder;
 use Illuminate\Console\Command;
 
 class SeedDemosCommand extends Command
