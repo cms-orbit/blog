@@ -17,8 +17,8 @@
 ## 요구사항
 
 - PHP `^8.4`
-- `cms-orbit/core` `^4.5`
-- `cms-orbit/saas` `^4.2` — **유료 패키지**, 사설 저장소에서만 배포
+- `cms-orbit/core` `^4.6.1`
+- `cms-orbit/saas` `^4.3.1` — **유료 패키지**, 사설 저장소에서만 배포
 - Laravel `^13.0`
 
 ## 설치
